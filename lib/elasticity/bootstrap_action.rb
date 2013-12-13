@@ -15,13 +15,22 @@ module Elasticity
     end
 
     def to_aws_bootstrap_action
-      {
+      action = {
         :name => @name,
         :script_bootstrap_action => {
-          :path => @script,
-          :args => [@option, @value]
+          :path => @script
         }
       }
+
+      if @option || @value
+        if @value
+          action[:script_bootstrap_action][:args] = [@option, @value]
+        else
+          action[:script_bootstrap_action][:args] = [@option]
+        end
+      end
+
+      action
     end
 
   end
